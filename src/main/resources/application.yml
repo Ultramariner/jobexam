@@ -1,0 +1,21 @@
+#spring.application.name=jobexam
+#server.port=8080
+#server.servlet.context-path=/jobexam
+#spring.mvc.static-path-pattern=/static/**
+
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/jobexam
+  jpa:
+    show-sql: true
+    open-in-view: true
+    hibernate:
+      ddl-auto: none
+server:
+  storage: D:\storage
+  servlet:
+    context-path: /jobexam
+
