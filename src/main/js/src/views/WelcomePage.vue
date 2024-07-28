@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import Button from "primevue/button"
 import {searchWelcomeMessage} from "@/services/WelcomeService";
+import router from "@/router";
 
 let welcomeMessage = ref("Hello");
 let isShowPage = ref(false);
@@ -20,6 +21,7 @@ onMounted(async () => {
  */
 function goToSavingPage() {
     //make routing here
+    router.push('/vue/dogs');
 }
 </script>
 

@@ -31,7 +31,7 @@ public class DogController {
     }
 
     //todo dto
-    @PutMapping
+    @PostMapping
     @ResponseBody
     public void save(@RequestBody Dog dog) throws IOException {
         dogService.saveToDatabase(dog);
