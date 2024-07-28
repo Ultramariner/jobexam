@@ -1,12 +1,17 @@
 package isida.by.jobexam.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.model.Dog;
+//import isida.by.jobexam.repository.BreedRepository;
 import isida.by.jobexam.repository.DogRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,22 +23,45 @@ import java.net.URL;
 @Transactional
 public class DogService {
 
-    private final DogRepository repository;
+    private final DogRepository dogRepository;
+//    private final BreedRepository breedRepository;
+    private final RestTemplate restTemplate;
     @Value("${server.storage}")
     private String storage;
 
-    public DogService(DogRepository repository) {
-        this.repository = repository;
+//    public DogService(DogRepository repository, BreedRepository breedRepository, RestTemplate restTemplate) {
+//        this.dogRepository = repository;
+//        this.breedRepository = breedRepository;
+//        this.restTemplate = restTemplate;
+//    }
+
+    public DogService(DogRepository repository, RestTemplate restTemplate) {
+        this.dogRepository = repository;
+        this.restTemplate = restTemplate;
     }
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    public Breed getDogBreeds() {
+        return restTemplate.getForObject("https://dog.ceo/api/breeds/list/all", Breed.class);
+    }
 
-    public void save(Dog dog) throws IOException {
+    public String getDogImageByBreed(String breed) throws JsonProcessingException {
+        ResponseEntity<String> response = restTemplate.getForEntity("https://dog.ceo/api/breed/" + breed + "/images/random", String.class);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(response.getBody());
+        return root.get("message").textValue();
+    }
+
+    //todo @Cached
+    public void saveToDatabase(Dog dog) throws IOException {
         String imgLink = dog.getLink();
-        URL url = new URL(imgLink);
         String storageLocation = storage + imgLink.substring(imgLink.lastIndexOf("/"));
         dog.setPath(storageLocation);
+        saveToStorage(imgLink, storageLocation);
+        dogRepository.save(dog);
+    }
+
+    public void saveToStorage(String imgLink, String storageLocation) throws IOException {
+        URL url = new URL(imgLink);
         InputStream inputStream = url.openStream();
         OutputStream fileOutputStream = new FileOutputStream(storageLocation);
         int ch;
@@ -42,6 +70,5 @@ public class DogService {
         }
         inputStream.close();
         fileOutputStream.close();
-        this.entityManager.persist(dog);
     }
 }

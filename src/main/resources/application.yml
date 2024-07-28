@@ -13,7 +13,7 @@ spring:
     show-sql: true
     open-in-view: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
 server:
   storage: D:\storage
   servlet:
