@@ -23,8 +23,8 @@ public class DogController {
     }
 
     @GetMapping("/breeds")
-    public ResponseEntity<List<String>> getBreeds() {
-        return ResponseEntity.ok(dogService.getDogBreeds());
+    public ResponseEntity<List<String>> getBreeds() throws JsonProcessingException {
+        return ResponseEntity.ok(dogService.getAllBreeds());
     }
 
     @GetMapping()

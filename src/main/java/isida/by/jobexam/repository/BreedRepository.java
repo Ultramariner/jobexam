@@ -4,6 +4,11 @@ import isida.by.jobexam.model.Breed;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-//@Repository
-//public interface BreedRepository extends JpaRepository<Breed, Integer> {
-//}
+@Repository
+public interface BreedRepository extends JpaRepository<Breed, Integer> {
+
+    default Breed updateOrInsert(Breed breed) {
+        return save(breed);
+    }
+
+}
