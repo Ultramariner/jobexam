@@ -18,6 +18,8 @@ function formSubmit() {
   console.log('formSubmit', dogName)
   console.log('formSubmit', dogComment)
   console.log('formSubmit', breed)
+  console.log('formSubmit', breeds)
+  console.log('formSubmit', imgUrl)
 }
 
 onMounted(async () => {
@@ -36,7 +38,7 @@ const fetchData = async () => {
         breed: 'hound'
       }
     });
-    imgUrl = response.data;
+    imgUrl.value = response.data;
   } catch (error) {
     console.error('Ошибка при загрузке данных:', error);
   }
@@ -48,8 +50,8 @@ const fetchData = async () => {
     <div class="content-box">
       <form v-on:submit.prevent="formSubmit">
         <select v-model="breed">
-          <option v-for="breed in breeds" :key="breed.key">
-            {{ breed.value }}
+          <option v-for="breed in breeds">
+            {{ breed }}
           </option>
         </select>
         <input type="text" v-model="dogName" class="form-control">

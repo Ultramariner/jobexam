@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -40,8 +43,9 @@ public class DogService {
         this.restTemplate = restTemplate;
     }
 
-    public Breed getDogBreeds() {
-        return restTemplate.getForObject("https://dog.ceo/api/breeds/list/all", Breed.class);
+    public List<String> getDogBreeds() {
+        Map<String, List<String>> breeds = (Map<String, List<String>>) restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", Map.class).getBody().get("message");
+        return new ArrayList<>(breeds.keySet());
     }
 
     public String getDogImageByBreed(String breed) throws JsonProcessingException {

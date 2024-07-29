@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/vue/dogs")
@@ -21,7 +23,7 @@ public class DogController {
     }
 
     @GetMapping("/breeds")
-    public ResponseEntity<Breed> getBreeds() {
+    public ResponseEntity<List<String>> getBreeds() {
         return ResponseEntity.ok(dogService.getDogBreeds());
     }
 

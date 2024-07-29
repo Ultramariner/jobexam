@@ -15,6 +15,6 @@ import java.util.Map;
 @Setter
 public class Breed {
 
-    private Map<String, List<String>> message;
+    private String name;
 
 }
