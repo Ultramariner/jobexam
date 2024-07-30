@@ -1,6 +1,7 @@
 package isida.by.jobexam.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import isida.by.jobexam.model.Breed;
@@ -8,6 +9,8 @@ import isida.by.jobexam.model.Dog;
 //import isida.by.jobexam.repository.BreedRepository;
 import isida.by.jobexam.repository.DogRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,30 +21,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class DogService {
 
     private final DogRepository dogRepository;
-//    private final BreedRepository breedRepository;
+    private final BreedService breedService;
     private final RestTemplate restTemplate;
     @Value("${server.storage}")
     private String storage;
 
-//    public DogService(DogRepository repository, BreedRepository breedRepository, RestTemplate restTemplate) {
-//        this.dogRepository = repository;
-//        this.breedRepository = breedRepository;
-//        this.restTemplate = restTemplate;
+//    public List<String> getDogBreeds() {
+//        Map<String, List<String>> breeds = (Map<String, List<String>>) restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", Map.class).getBody().get("message");
+//        return new ArrayList<>(breeds.keySet());
 //    }
 
-    public DogService(DogRepository repository, RestTemplate restTemplate) {
-        this.dogRepository = repository;
-        this.restTemplate = restTemplate;
-    }
-
-    public Breed getDogBreeds() {
-        return restTemplate.getForObject("https://dog.ceo/api/breeds/list/all", Breed.class);
+    public void getAllBreeds() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
+        JsonNode jsonNode = objectMapper.readTree(response);
+        JsonNode messageNode = jsonNode.get("message");
+        //        return objectMapper.readValue(breeds, new TypeReference<List<Breed>>(){});
+        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<>() {
+        });
+        breedService.saveToDatabase(breeds);
     }
 
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
@@ -51,10 +59,10 @@ public class DogService {
         return root.get("message").textValue();
     }
 
-    //todo @Cached
+    //todo @Cached | save breed: name -> id
     public void saveToDatabase(Dog dog) throws IOException {
         String imgLink = dog.getLink();
-        String storageLocation = storage + imgLink.substring(imgLink.lastIndexOf("/"));
+        String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
         dog.setPath(storageLocation);
         saveToStorage(imgLink, storageLocation);
         dogRepository.save(dog);
