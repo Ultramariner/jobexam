@@ -24,7 +24,7 @@ function formSubmit() {
 
 onMounted(async () => {
   try {
-    const response = await axios.get('http://localhost:8080/jobexam/vue/dogs/breeds');
+    const response = await axios.get('http://localhost:8080/jobexam/vue/dogs');
     breeds.value = Array.from(response.data);
   } catch (error) {
     console.error('Ошибка при загрузке данных:', error);
@@ -33,11 +33,7 @@ onMounted(async () => {
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/jobexam/vue/dogs', {
-      params: {
-        breed: 'hound'
-      }
-    });
+    const response = await axios.post(`http://localhost:8080/jobexam/vue/dogs?breed=${breed.value}`);
     imgUrl.value = response.data;
   } catch (error) {
     console.error('Ошибка при загрузке данных:', error);
@@ -51,7 +47,7 @@ const fetchData = async () => {
       <form v-on:submit.prevent="formSubmit">
         <select v-model="breed">
           <option v-for="breed in breeds">
-            {{ breed }}
+            {{ breed.name }}
           </option>
         </select>
         <input type="text" v-model="dogName" class="form-control">

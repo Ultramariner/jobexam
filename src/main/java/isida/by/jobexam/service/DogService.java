@@ -41,15 +41,15 @@ public class DogService {
 //        return new ArrayList<>(breeds.keySet());
 //    }
 
-    public List<String> getAllBreeds() throws JsonProcessingException {
+    public void getAllBreeds() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
         JsonNode jsonNode = objectMapper.readTree(response);
         JsonNode messageNode = jsonNode.get("message");
         //        return objectMapper.readValue(breeds, new TypeReference<List<Breed>>(){});
-        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<Map<String, List<String>>>() {});
+        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<>() {
+        });
         breedService.saveToDatabase(breeds);
-        return new ArrayList<>(breeds.keySet());
     }
 
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
