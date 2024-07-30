@@ -28,10 +28,11 @@ public class DogController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Breed>> findAllBreeds() throws JsonProcessingException {
+    public ResponseEntity<List<Breed>> findAllBreeds() {
         return ResponseEntity.ok(breedService.findAllBreeds());
     }
 
+    //todo REST check | mapping methods
     @PostMapping
     public ResponseEntity<String> getImageByBreed(@RequestParam(value = "breed") String breed) throws JsonProcessingException {
         return ResponseEntity.ok(dogService.getDogImageByBreed(breed));
