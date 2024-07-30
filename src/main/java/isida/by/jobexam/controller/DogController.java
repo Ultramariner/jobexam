@@ -37,7 +37,7 @@ public class DogController {
         return ResponseEntity.ok(dogService.getDogImageByBreed(breed));
     }
 
-    //todo dto
+    //todo dto | return .ok
     @PutMapping
     @ResponseBody
     public void save(@RequestBody Dog dog) throws IOException {

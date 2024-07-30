@@ -29,7 +29,6 @@ const getBreeds = async () => {
  * Переход на страницу сохранения картинок
  */
 function goToSavingPage() {
-    //make routing here
     router.push('/vue/dogs');
     getBreeds();
 }

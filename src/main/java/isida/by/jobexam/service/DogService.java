@@ -59,10 +59,10 @@ public class DogService {
         return root.get("message").textValue();
     }
 
-    //todo @Cached
+    //todo @Cached | save breed: name -> id
     public void saveToDatabase(Dog dog) throws IOException {
         String imgLink = dog.getLink();
-        String storageLocation = storage + imgLink.substring(imgLink.lastIndexOf("/"));
+        String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
         dog.setPath(storageLocation);
         saveToStorage(imgLink, storageLocation);
         dogRepository.save(dog);
