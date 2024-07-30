@@ -38,7 +38,7 @@ const getImg = async () => {
   }
   // errors.value.breed = false;
   try {
-    const response = await axios.post(`http://localhost:8080/jobexam/vue/dogs?breed=${breed.value}`);
+    const response = await axios.get(`http://localhost:8080/jobexam/vue/dogs/${breed.value}`);
     imgUrl.value = response.data;
   } catch (error) {
     console.error('Ошибка при получении изображения:', error);
@@ -53,7 +53,7 @@ const save = async () => {
   }
   // errors.value.breed = false;
   try {
-    await axios.put(`http://localhost:8080/jobexam/vue/dogs`, {
+    await axios.post(`http://localhost:8080/jobexam/vue/dogs`, {
       name: dogName.value,
       breed: breed.value,
       comment: dogComment.value,
@@ -65,7 +65,7 @@ const save = async () => {
 };
 
 const handleImageLoad = () => {
-  if (imgUrl.value !== "blank1.jpg") {
+  if (imgUrl.value !== "blank.jpg") {
     imgLoaded.value = true;
   }
 };
@@ -78,7 +78,7 @@ const handleImageLoad = () => {
 <!--        <select v-model="breed" @change=getImg :class="{ 'error': errors.value.breed }">-->
         <select v-model="breed" @change=getImg>
           <option value="" disabled selected>Выберите породу</option>
-          <option v-for="breed in breeds">
+          <option v-for="breed in breeds" :key="breed.id" :value="breed.name">
             {{ breed.name }}
           </option>
         </select>

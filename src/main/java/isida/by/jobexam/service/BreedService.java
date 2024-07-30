@@ -17,16 +17,26 @@ public class BreedService {
 
     private final BreedRepository breedRepository;
 
-    //todo upsert
     public void saveToDatabase(Map<String, List<String>> breedsMap) {
-        List<Breed> breedsList = new ArrayList<>();
-        breedsMap.forEach((breedName, subBreeds) -> {
-            Breed breed = new Breed();
-            breed.setName(breedName);
+//        List<Breed> breedsList = new ArrayList<>();
+//        breedsMap.forEach((breedName, subBreeds) -> {
+//            Breed breed = new Breed();
+//            breed.setName(breedName);
+//            breed.setSubBreeds(subBreeds);
+//            breedsList.add(breed);
+//        });
+//        breedRepository.saveAll(breedsList);
+
+        for (Map.Entry<String, List<String>> entry : breedsMap.entrySet()) {
+            String name = entry.getKey();
+            List<String> subBreeds = entry.getValue();
+            Breed breed = breedRepository.findByName(name);
+            if (breed == null) {
+                breed = new Breed(name);
+            }
             breed.setSubBreeds(subBreeds);
-            breedsList.add(breed);
-        });
-        breedRepository.saveAll(breedsList);
+            breedRepository.save(breed);
+        }
     }
 
     public List<Breed> findAllBreeds() {

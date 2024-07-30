@@ -4,12 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.model.Dog;
-//import isida.by.jobexam.repository.BreedRepository;
+import isida.by.jobexam.repository.BreedRepository;
 import isida.by.jobexam.repository.DogRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +28,7 @@ import java.util.Map;
 public class DogService {
 
     private final DogRepository dogRepository;
+    private final BreedRepository breedRepository;
     private final BreedService breedService;
     private final RestTemplate restTemplate;
     @Value("${server.storage}")
@@ -59,12 +57,12 @@ public class DogService {
         return root.get("message").textValue();
     }
 
-    //todo @Cached | save breed: name -> id
     public void saveToDatabase(Dog dog) throws IOException {
         String imgLink = dog.getLink();
         String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
         dog.setPath(storageLocation);
         saveToStorage(imgLink, storageLocation);
+        dog.setBreed(breedRepository.findByName(dog.getBreed().getName()));
         dogRepository.save(dog);
     }
 

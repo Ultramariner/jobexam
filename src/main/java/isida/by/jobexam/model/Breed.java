@@ -1,17 +1,13 @@
 package isida.by.jobexam.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.Map;
 
 
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -28,4 +24,7 @@ public class Breed {
     @Column(name = "sub_breed")
     private List<String> subBreeds;
 
+    public Breed(String name) {
+        this.name = name;
+    }
 }

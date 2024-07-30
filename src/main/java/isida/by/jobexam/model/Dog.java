@@ -15,7 +15,9 @@ public class Dog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String breed;
+    @ManyToOne
+    @JoinColumn(name="breed_id")
+    private Breed breed;
     private String comment;
     private String link;
     private String path;

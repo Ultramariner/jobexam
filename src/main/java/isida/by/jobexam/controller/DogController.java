@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @AllArgsConstructor
 @Controller
@@ -23,8 +22,9 @@ public class DogController {
     private final BreedService breedService;
 
     @GetMapping("/breeds")
-    public void getAllBreeds() throws JsonProcessingException {
+    public ResponseEntity<Void> getAllBreeds() throws JsonProcessingException {
         dogService.getAllBreeds();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
@@ -32,16 +32,15 @@ public class DogController {
         return ResponseEntity.ok(breedService.findAllBreeds());
     }
 
-    //todo REST check | mapping methods
-    @PostMapping
-    public ResponseEntity<String> getImageByBreed(@RequestParam(value = "breed") String breed) throws JsonProcessingException {
+    @GetMapping("/{breed}")
+    public ResponseEntity<String> getImageByBreed(@PathVariable String breed) throws JsonProcessingException {
         return ResponseEntity.ok(dogService.getDogImageByBreed(breed));
     }
 
-    //todo dto | return .ok
-    @PutMapping
+    @PostMapping
     @ResponseBody
-    public void save(@RequestBody Dog dog) throws IOException {
+    public ResponseEntity<Void> save(@RequestBody Dog dog) throws IOException {
         dogService.saveToDatabase(dog);
+        return ResponseEntity.ok().build();
     }
 }
