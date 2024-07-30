@@ -2,7 +2,7 @@
 import { ref , onMounted } from 'vue'
 import axios from 'axios';
 
-let imgUrl = ref("https://i.pinimg.com/564x/cd/be/25/cdbe25429e0ccf90e7fada10804b9127.jpg");
+let imgUrl = ref("blank.jpg");
 let dogName = ref(null);
 let dogComment = ref(null);
 let breed = ref(null);
@@ -65,7 +65,7 @@ const save = async () => {
 };
 
 const handleImageLoad = () => {
-  if (imgUrl.value !== "https://i.pinimg.com/564x/cd/be/25/cdbe25429e0ccf90e7fada10804b9127.jpg") {
+  if (imgUrl.value !== "blank1.jpg") {
     imgLoaded.value = true;
   }
 };
