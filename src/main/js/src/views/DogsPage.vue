@@ -1,6 +1,11 @@
 <script setup>
 import { ref , onMounted } from 'vue'
 import axios from 'axios';
+import Dropdown from 'primevue/dropdown';
+import InputText from 'primevue/inputtext';
+import Image from 'primevue/image';
+import Button from 'primevue/button';
+
 
 let imgUrl = ref("blank.jpg");
 let dogName = ref(null);
@@ -8,18 +13,6 @@ let dogComment = ref(null);
 let breed = ref(null);
 let breeds = ref(null);
 const imgLoaded = ref(false);
-// const errors = ref({
-//   dogName: false,
-//   breed: false,
-// });
-
-function formSubmit() {
-  console.log('formSubmit', dogName)
-  console.log('formSubmit', dogComment)
-  console.log('formSubmit', breed)
-  console.log('formSubmit', breeds)
-  console.log('formSubmit', imgUrl)
-}
 
 onMounted(async () => {
   try {
@@ -32,11 +25,9 @@ onMounted(async () => {
 
 const getImg = async () => {
   if (!breed.value) {
-    // errors.value.breed = true;
     window.alert('Выберите породу');
-    // return;
+    return;
   }
-  // errors.value.breed = false;
   try {
     const response = await axios.get(`http://localhost:8080/jobexam/vue/dogs/${breed.value}`);
     imgUrl.value = response.data;
@@ -47,11 +38,9 @@ const getImg = async () => {
 
 const save = async () => {
   if (!dogName.value) {
-    // errors.value.breed = true;
     window.alert('Заполните обязательные поля');
     return;
   }
-  // errors.value.breed = false;
   try {
     await axios.post(`http://localhost:8080/jobexam/vue/dogs`, {
       name: dogName.value,
@@ -75,21 +64,26 @@ const handleImageLoad = () => {
   <div class="main-container">
     <div class="content-box">
       <form v-on:submit.prevent="formSubmit">
-<!--        <select v-model="breed" @change=getImg :class="{ 'error': errors.value.breed }">-->
+<!--        <template v-if="breeds">-->
+<!--          <Dropdown v-model="breed" :options="breeds" optionLabel="name" placeholder="Выберите породу" />-->
+<!--        </template>-->
+<!--        <template v-else>-->
+<!--          Загрузка...-->
+<!--        </template>-->
+<!--        <Dropdown v-model="breed" :options="breeds" optionLabel="name" @change="getImg" placeholder="Выберите породу" />-->
         <select v-model="breed" @change=getImg>
           <option value="" disabled selected>Выберите породу</option>
           <option v-for="breed in breeds" :key="breed.id" :value="breed.name">
             {{ breed.name }}
           </option>
         </select>
-<!--        <input v-if="imgLoaded" type="text" v-model="dogName" class="form-control" placeholder="Имя" :class="{ 'error': errors.value.dogName }">-->
-        <input v-if="imgLoaded" type="text" v-model="dogName" class="form-control" placeholder="Имя">
-        <input v-if="imgLoaded" type="text" v-model="dogComment" class="form-control" placeholder="Комментарий">
+        <InputText v-if="imgLoaded" v-model="dogName" placeholder="Имя" />
+        <InputText v-if="imgLoaded" v-model="dogComment" placeholder="Комментарий" />
         <hr/>
-        <img :src= imgUrl  alt="Фото" @load="handleImageLoad">
+        <Image :src="imgUrl" alt="Фото" @load="handleImageLoad" />
         <br/>
-        <button type="submit" class="btn btn-success" @click="getImg">Поиск</button>
-        <button v-if="imgLoaded" type="submit" class="btn btn-success" @click="save">Сохранить</button>
+        <Button type="button" label="Поиск" icon="pi pi-search" @click="getImg" />
+        <Button v-if="imgLoaded" type="button" label="Сохранить" icon="pi pi-save" @click="save" />
       </form>
     </div>
   </div>
@@ -113,11 +107,12 @@ const handleImageLoad = () => {
 }
 
 img {
-  max-width: 500px;
+  max-width: 400px;
   height: auto;
 }
 
-/*.error {*/
-/*  border: 2px solid red;*/
-/*}*/
+select, input, button {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
 </style>
