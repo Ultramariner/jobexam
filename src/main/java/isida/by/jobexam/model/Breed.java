@@ -23,6 +23,12 @@ public class Breed {
     @CollectionTable(name = "sub_breeds", joinColumns = @JoinColumn(name = "breed_id"))
     @Column(name = "sub_breed")
     private List<String> subBreeds;
+//    @ManyToMany
+//    @JoinTable(name = "sub_breeds",
+//        joinColumns = @JoinColumn(name = "breed_id"),
+//        inverseJoinColumns = @JoinColumn(name = "sub_breed_id"))
+//    private List<Breed> subBreeds;
+
 
     public Breed(String name) {
         this.name = name;

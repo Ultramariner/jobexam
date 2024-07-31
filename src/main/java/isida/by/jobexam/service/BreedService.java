@@ -19,14 +19,26 @@ public class BreedService {
     private final BreedRepository breedRepository;
 
     public void saveToDatabase(Map<String, List<String>> breedsMap) {
-//        List<Breed> breedsList = new ArrayList<>();
 //        breedsMap.forEach((breedName, subBreeds) -> {
-//            Breed breed = new Breed();
-//            breed.setName(breedName);
-//            breed.setSubBreeds(subBreeds);
-//            breedsList.add(breed);
+//            Breed breed = breedRepository.findByName(breedName);
+//            if (breed == null) {
+//                breed = new Breed(breedName);
+//            }
+//            breedRepository.save(breed);;
 //        });
-//        breedRepository.saveAll(breedsList);
+//        breedsMap.forEach((breedName, subBreedsStr) -> {
+//            Breed breed = breedRepository.findByName(breedName);
+//            List<Breed> subBreeds = new ArrayList<>();
+//            for (String name : subBreedsStr) {
+//                Breed subBreed = breedRepository.findByName(name);
+//                if (breed != null) {
+//                    subBreeds.add(subBreed);
+//                }
+//            }
+//            assert breed != null;
+//            breed.setSubBreeds(subBreeds);
+//            breedRepository.save(breed);;
+//        });
 
         for (Map.Entry<String, List<String>> entry : breedsMap.entrySet()) {
             String name = entry.getKey();
@@ -46,7 +58,6 @@ public class BreedService {
         for (Breed breed : breeds) {
             BreedDto dto = new BreedDto();
             dto.setName(breed.getName());
-            dto.setSubBreeds(breed.getSubBreeds());
             breedsDto.add(dto);
         }
         return breedsDto;
