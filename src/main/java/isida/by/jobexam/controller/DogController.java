@@ -23,6 +23,7 @@ public class DogController {
     private final DogService dogService;
     private final BreedService breedService;
 
+    //todo try-catch
     @GetMapping("/breeds")
     public ResponseEntity<Void> getAllBreeds() throws JsonProcessingException {
         dogService.getAllBreeds();

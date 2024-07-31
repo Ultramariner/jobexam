@@ -52,6 +52,7 @@ public class BreedService {
         }
     }
 
+    //todo localization
     public List<BreedDto> findAllBreeds() {
         List<Breed> breeds = breedRepository.findAll();
         List<BreedDto> breedsDto = new ArrayList<>();

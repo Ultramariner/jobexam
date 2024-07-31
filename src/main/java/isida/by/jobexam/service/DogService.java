@@ -40,7 +40,7 @@ public class DogService {
 //        return new ArrayList<>(breeds.keySet());
 //    }
 
-    //todo dto
+    //todo tests
     public void getAllBreeds() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
