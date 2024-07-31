@@ -1,5 +1,6 @@
 package isida.by.jobexam.service;
 
+import isida.by.jobexam.dto.BreedDto;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.repository.BreedRepository;
 import jakarta.transaction.Transactional;
@@ -39,8 +40,16 @@ public class BreedService {
         }
     }
 
-    public List<Breed> findAllBreeds() {
-        return breedRepository.findAll();
+    public List<BreedDto> findAllBreeds() {
+        List<Breed> breeds = breedRepository.findAll();
+        List<BreedDto> breedsDto = new ArrayList<>();
+        for (Breed breed : breeds) {
+            BreedDto dto = new BreedDto();
+            dto.setName(breed.getName());
+            dto.setSubBreeds(breed.getSubBreeds());
+            breedsDto.add(dto);
+        }
+        return breedsDto;
     }
 
 }

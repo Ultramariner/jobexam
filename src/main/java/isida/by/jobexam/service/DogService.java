@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import isida.by.jobexam.dto.DogDto;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.BreedRepository;
 import isida.by.jobexam.repository.DogRepository;
@@ -39,6 +40,7 @@ public class DogService {
 //        return new ArrayList<>(breeds.keySet());
 //    }
 
+    //todo dto
     public void getAllBreeds() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
@@ -57,12 +59,16 @@ public class DogService {
         return root.get("message").textValue();
     }
 
-    public void saveToDatabase(Dog dog) throws IOException {
-        String imgLink = dog.getLink();
+    public void saveToDatabase(DogDto dogDto) throws IOException {
+        Dog dog = new Dog();
+        dog.setName(dogDto.getName());
+        dog.setComment(dogDto.getComment());
+        String imgLink = dogDto.getLink();
+        dog.setLink(imgLink);
         String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
         dog.setPath(storageLocation);
         saveToStorage(imgLink, storageLocation);
-        dog.setBreed(breedRepository.findByName(dog.getBreed().getName()));
+        dog.setBreed(breedRepository.findByName(dogDto.getBreed()));
         dogRepository.save(dog);
     }
 

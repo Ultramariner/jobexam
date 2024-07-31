@@ -1,6 +1,8 @@
 package isida.by.jobexam.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import isida.by.jobexam.dto.BreedDto;
+import isida.by.jobexam.dto.DogDto;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.service.BreedService;
@@ -27,8 +29,9 @@ public class DogController {
         return ResponseEntity.ok().build();
     }
 
+    //todo @ApiResponces
     @GetMapping
-    public ResponseEntity<List<Breed>> findAllBreeds() {
+    public ResponseEntity<List<BreedDto>> findAllBreeds() {
         return ResponseEntity.ok(breedService.findAllBreeds());
     }
 
@@ -39,7 +42,7 @@ public class DogController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<Void> save(@RequestBody Dog dog) throws IOException {
+    public ResponseEntity<Void> save(@RequestBody DogDto dog) throws IOException {
         dogService.saveToDatabase(dog);
         return ResponseEntity.ok().build();
     }
