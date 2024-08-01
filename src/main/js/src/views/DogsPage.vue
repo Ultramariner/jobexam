@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, onBeforeMount} from 'vue'
+import {ref, onBeforeMount, computed} from 'vue'
 import axios from 'axios';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
@@ -12,16 +12,44 @@ let dogName = ref(null);
 let dogComment = ref(null);
 let breed = ref(null);
 let breeds = ref([]);
+let breedsList = ref([]);
+const breedsMap = {};
 const imgLoaded = ref(false);
 
 onBeforeMount(async () => {
   try {
     const response = await axios.get('http://localhost:8080/jobexam/vue/dogs');
-    breeds.value = response.data;
+    const responseLocalization = await axios.get('http://localhost:8080/jobexam/vue/dogs/breeds/ru');
+    breeds.value = Array.from(response.data);
+
+    // breeds = breedsMap;
+
+    // breeds = Array.from(response.data);
+    // console.log(breeds);
+    //
+    // for (let [key, value] of breeds) {
+    //   console.log(`Значение было: ${value}`);
+    //   value = responseLocalization[value];
+    //   console.log(`Значение стало: ${value}`);
+    // }
+
+    // breeds.forEach((breed) => {
+    //   const localizedValue = responseLocalization.data[breed.name] || breed.name;
+    //   breedsMap.set(breed.name, localizedValue);
+    // });
+
+    // breeds.value = breedsMap;
+
   } catch (error) {
     console.error('Ошибка при получении данных:', error);
   }
 });
+
+// let breedsList = computed(() => {
+//   console.log('breedsList:');
+//   console.log(Object.values(breedsMap));
+//   return Object.values(breedsMap);
+// });
 
 const getImg = async () => {
   if (!breed.value) {

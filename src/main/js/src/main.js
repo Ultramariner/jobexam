@@ -13,5 +13,4 @@ setLocale(ru);
 createApp(App)
     .use(router)
     .use(PrimeVue)
-    .use(PrimeIcons)
     .mount('#app')

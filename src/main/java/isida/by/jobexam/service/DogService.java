@@ -41,16 +41,16 @@ public class DogService {
 //    }
 
     //todo tests
-    public void getAllBreeds() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
-        JsonNode jsonNode = objectMapper.readTree(response);
-        JsonNode messageNode = jsonNode.get("message");
-        //        return objectMapper.readValue(breeds, new TypeReference<List<Breed>>(){});
-        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<>() {
-        });
-        breedService.saveToDatabase(breeds);
-    }
+//    public void getAllBreeds() throws JsonProcessingException {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
+//        JsonNode jsonNode = objectMapper.readTree(response);
+//        JsonNode messageNode = jsonNode.get("message");
+//        //        return objectMapper.readValue(breeds, new TypeReference<List<Breed>>(){});
+//        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<>() {
+//        });
+//        breedService.saveToDatabase(breeds);
+//    }
 
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
         ResponseEntity<String> response = restTemplate.getForEntity("https://dog.ceo/api/breed/" + breed + "/images/random", String.class);

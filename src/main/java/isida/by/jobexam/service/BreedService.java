@@ -1,12 +1,19 @@
 package isida.by.jobexam.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import isida.by.jobexam.dto.BreedDto;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.repository.BreedRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +24,25 @@ import java.util.Map;
 public class BreedService {
 
     private final BreedRepository breedRepository;
+    private final RestTemplate restTemplate;
+
+    public void getAllBreeds() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
+        JsonNode jsonNode = objectMapper.readTree(response);
+        JsonNode messageNode = jsonNode.get("message");
+        //        return objectMapper.readValue(breeds, new TypeReference<List<Breed>>(){});
+        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<>() {
+        });
+        saveToDatabase(breeds);
+    }
+
+    public Map<String, String> getBreedsLocalization(String lang) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<Map<String, String>> typeReference = new TypeReference<>() {};
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("DogsRussianNames.json");
+        return objectMapper.readValue(inputStream, typeReference);
+    }
 
     public void saveToDatabase(Map<String, List<String>> breedsMap) {
 //        breedsMap.forEach((breedName, subBreeds) -> {
