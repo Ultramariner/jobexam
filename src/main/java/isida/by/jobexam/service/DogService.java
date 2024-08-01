@@ -29,29 +29,12 @@ import java.util.Map;
 public class DogService {
 
     private final DogRepository dogRepository;
-    private final BreedRepository breedRepository;
     private final BreedService breedService;
     private final RestTemplate restTemplate;
     @Value("${server.storage}")
     private String storage;
 
-//    public List<String> getDogBreeds() {
-//        Map<String, List<String>> breeds = (Map<String, List<String>>) restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", Map.class).getBody().get("message");
-//        return new ArrayList<>(breeds.keySet());
-//    }
-
     //todo tests
-//    public void getAllBreeds() throws JsonProcessingException {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
-//        JsonNode jsonNode = objectMapper.readTree(response);
-//        JsonNode messageNode = jsonNode.get("message");
-//        //        return objectMapper.readValue(breeds, new TypeReference<List<Breed>>(){});
-//        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<>() {
-//        });
-//        breedService.saveToDatabase(breeds);
-//    }
-
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
         ResponseEntity<String> response = restTemplate.getForEntity("https://dog.ceo/api/breed/" + breed + "/images/random", String.class);
         ObjectMapper mapper = new ObjectMapper();
@@ -68,7 +51,7 @@ public class DogService {
         String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
         dog.setPath(storageLocation);
         saveToStorage(imgLink, storageLocation);
-        dog.setBreed(breedRepository.findByName(dogDto.getBreed()));
+        dog.setBreed(breedService.findByName(dogDto.getBreed()));
         dogRepository.save(dog);
     }
 

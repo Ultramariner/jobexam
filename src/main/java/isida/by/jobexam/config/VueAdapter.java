@@ -27,26 +27,26 @@ public class VueAdapter implements WebMvcConfigurer {
                 .allowedHeaders("*");
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("lang");
-        registry.addInterceptor(localeChangeInterceptor);
-    }
-
-    @Bean
-    LocaleResolver localeResolver() {
-        SessionLocaleResolver resolver = new SessionLocaleResolver();
-        resolver.setDefaultLocale(new Locale("en"));
-        return resolver;
-    }
-
     //todo .properties -> .json
-    @Bean
-    MessageSource messageSource(LocaleResolver localeResolver) {
-        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-        source.setBasename("i18n/label");
-        source.setDefaultEncoding("UTF-8");
-        return source;
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+//        localeChangeInterceptor.setParamName("lang");
+//        registry.addInterceptor(localeChangeInterceptor);
+//    }
+//
+//    @Bean
+//    LocaleResolver localeResolver() {
+//        SessionLocaleResolver resolver = new SessionLocaleResolver();
+//        resolver.setDefaultLocale(new Locale("en"));
+//        return resolver;
+//    }
+//
+//    @Bean
+//    MessageSource messageSource(LocaleResolver localeResolver) {
+//        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+//        source.setBasename("i18n/label");
+//        source.setDefaultEncoding("UTF-8");
+//        return source;
+//    }
 }

@@ -24,12 +24,7 @@ public class DogController {
     private final BreedService breedService;
 
     //todo try-catch
-//    @GetMapping("/breeds")
-//    public ResponseEntity<Void> getAllBreeds() throws JsonProcessingException {
-//        dogService.getAllBreeds();
-//        return ResponseEntity.ok().build();
-//    }
-
+    //todo comment methods
     //todo @ApiResponces
     @GetMapping
     public ResponseEntity<List<BreedDto>> findAllBreeds() {

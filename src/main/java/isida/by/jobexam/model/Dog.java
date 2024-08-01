@@ -22,18 +22,4 @@ public class Dog {
     private String link;
     private String path;
 
-//    public Dog(String name, String breed, String comment, String link) {
-//        this.name = name;
-//        this.breed = breed;
-//        this.comment = comment;
-//        this.link = link;
-//    }
-//
-//    public Dog(String name, String breed, String comment, String path, String link) {
-//        this.name = name;
-//        this.breed = breed;
-//        this.comment = comment;
-//        this.path = path;
-//        this.link = link;
-//    }
 }

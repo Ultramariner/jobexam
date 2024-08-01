@@ -26,6 +26,10 @@ public class BreedService {
     private final BreedRepository breedRepository;
     private final RestTemplate restTemplate;
 
+    public Breed findByName(String name) {
+        return breedRepository.findByName(name);
+    }
+
     public void getAllBreeds() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String response = restTemplate.getForEntity("https://dog.ceo/api/breeds/list/all", String.class).getBody();
@@ -45,27 +49,6 @@ public class BreedService {
     }
 
     public void saveToDatabase(Map<String, List<String>> breedsMap) {
-//        breedsMap.forEach((breedName, subBreeds) -> {
-//            Breed breed = breedRepository.findByName(breedName);
-//            if (breed == null) {
-//                breed = new Breed(breedName);
-//            }
-//            breedRepository.save(breed);;
-//        });
-//        breedsMap.forEach((breedName, subBreedsStr) -> {
-//            Breed breed = breedRepository.findByName(breedName);
-//            List<Breed> subBreeds = new ArrayList<>();
-//            for (String name : subBreedsStr) {
-//                Breed subBreed = breedRepository.findByName(name);
-//                if (breed != null) {
-//                    subBreeds.add(subBreed);
-//                }
-//            }
-//            assert breed != null;
-//            breed.setSubBreeds(subBreeds);
-//            breedRepository.save(breed);;
-//        });
-
         for (Map.Entry<String, List<String>> entry : breedsMap.entrySet()) {
             String name = entry.getKey();
             List<String> subBreeds = entry.getValue();
@@ -78,7 +61,6 @@ public class BreedService {
         }
     }
 
-    //todo localization
     public List<BreedDto> findAllBreeds() {
         List<Breed> breeds = breedRepository.findAll();
         List<BreedDto> breedsDto = new ArrayList<>();
