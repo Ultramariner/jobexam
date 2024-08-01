@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onMounted } from 'vue'
+import {ref, onMounted, onBeforeMount} from 'vue'
 import axios from 'axios';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
@@ -11,13 +11,13 @@ let imgUrl = ref("blank.jpg");
 let dogName = ref(null);
 let dogComment = ref(null);
 let breed = ref(null);
-let breeds = ref(null);
+let breeds = ref([]);
 const imgLoaded = ref(false);
 
-onMounted(async () => {
+onBeforeMount(async () => {
   try {
     const response = await axios.get('http://localhost:8080/jobexam/vue/dogs');
-    breeds.value = Array.from(response.data);
+    breeds.value = response.data;
   } catch (error) {
     console.error('Ошибка при получении данных:', error);
   }
@@ -29,7 +29,7 @@ const getImg = async () => {
     return;
   }
   try {
-    const response = await axios.get(`http://localhost:8080/jobexam/vue/dogs/${breed.value}`);
+    const response = await axios.get(`http://localhost:8080/jobexam/vue/dogs/${breed.value.name}`);
     imgUrl.value = response.data;
   } catch (error) {
     console.error('Ошибка при получении изображения:', error);
@@ -44,7 +44,7 @@ const save = async () => {
   try {
     await axios.post(`http://localhost:8080/jobexam/vue/dogs`, {
       name: dogName.value,
-      breed: breed.value,
+      breed: breed.value.name,
       comment: dogComment.value,
       link: imgUrl.value,
     });
@@ -70,13 +70,13 @@ const handleImageLoad = () => {
 <!--        <template v-else>-->
 <!--          Загрузка...-->
 <!--        </template>-->
-<!--        <Dropdown v-model="breed" :options="breeds" optionLabel="name" @change="getImg" placeholder="Выберите породу" />-->
-        <select v-model="breed" @change=getImg>
-          <option value="" disabled selected>Выберите породу</option>
-          <option v-for="breed in breeds" :key="breed.id" :value="breed.name">
-            {{ breed.name }}
-          </option>
-        </select>
+        <Dropdown v-model="breed" :options="breeds" optionLabel="name" @change="getImg" placeholder="Выберите породу" />
+<!--        <select v-model="breed" @change=getImg>-->
+<!--          <option value="" disabled selected>Выберите породу</option>-->
+<!--          <option v-for="breed in breeds">-->
+<!--            {{ breed.name }}-->
+<!--          </option>-->
+<!--        </select>-->
         <InputText v-if="imgLoaded" v-model="dogName" placeholder="Имя" />
         <InputText v-if="imgLoaded" v-model="dogComment" placeholder="Комментарий" />
         <hr/>
