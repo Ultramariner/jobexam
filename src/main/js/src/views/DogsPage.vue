@@ -79,7 +79,7 @@ const breedsOptions = computed(() => {
   <div class="main-container">
     <div class="content-box">
       <form v-on:submit.prevent="formSubmit">
-        <Dropdown v-model="breed" :options="breedsOptions" optionLabel="label" @change="getImg" placeholder="Выберите породу" />
+        <Dropdown v-model="breed" :options="breedsOptions" optionLabel="label" @change="getImg" placeholder="Выберите породу" class="dropdown-with-margin" />
         <InputText v-if="imgLoaded" v-model="dogName" placeholder="Имя" />
         <InputText v-if="imgLoaded" v-model="dogComment" placeholder="Комментарий" />
         <hr/>
@@ -109,12 +109,17 @@ const breedsOptions = computed(() => {
   text-align: center;
 }
 
+.dropdown-with-margin {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
 img {
   max-width: 400px;
   height: auto;
 }
 
-select, input, button {
+input, button {
   margin-bottom: 10px;
   margin-right: 10px;
 }
