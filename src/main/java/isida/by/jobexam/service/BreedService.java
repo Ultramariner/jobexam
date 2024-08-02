@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import isida.by.jobexam.dto.BreedDto;
+import isida.by.jobexam.mapper.Mapper;
+import isida.by.jobexam.mapper.MapperImpl;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.repository.BreedRepository;
 import jakarta.transaction.Transactional;
@@ -87,11 +89,10 @@ public class BreedService {
      */
     public List<BreedDto> findAllBreeds() {
         List<Breed> breeds = breedRepository.findAll();
-        //todo (9) mapper class or mapStruct
         List<BreedDto> breedsDto = new ArrayList<>();
+        Mapper mapper = new MapperImpl();
         for (Breed breed : breeds) {
-            BreedDto dto = new BreedDto();
-            dto.setName(breed.getName());
+            BreedDto dto = mapper.map(breed);
             breedsDto.add(dto);
         }
         return breedsDto;

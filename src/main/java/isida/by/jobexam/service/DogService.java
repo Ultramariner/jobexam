@@ -3,6 +3,8 @@ package isida.by.jobexam.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import isida.by.jobexam.dto.DogDto;
+import isida.by.jobexam.mapper.Mapper;
+import isida.by.jobexam.mapper.MapperImpl;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.DogRepository;
 import jakarta.transaction.Transactional;
@@ -45,15 +47,13 @@ public class DogService {
      * @param dogDto Данные о собаке
      */
     public void saveToDatabase(DogDto dogDto) throws IOException {
-        Dog dog = new Dog();
-        dog.setName(dogDto.getName());
-        dog.setComment(dogDto.getComment());
+        Mapper mapper = new MapperImpl();
+        Dog dog = mapper.map(dogDto);
         String imgLink = dogDto.getLink();
-        dog.setLink(imgLink);
         String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
         dog.setPath(storageLocation);
-        fileStorageService.saveToStorage(imgLink, storageLocation);
         dog.setBreed(breedService.findByName(dogDto.getBreed()));
+        fileStorageService.saveToStorage(imgLink, storageLocation);
         dogRepository.save(dog);
     }
 
