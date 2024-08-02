@@ -1,4 +1,4 @@
-package isida.by.jobexam.config.utility;
+package isida.by.jobexam.utility;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

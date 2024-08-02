@@ -11,6 +11,11 @@ import java.net.URL;
 @Service
 public class FileStorageService {
 
+    /**
+     * Сохраняет изображение в указанном месте в локальном файловом хранилище
+     * @param imgLink Ссылка на изображение
+     * @param storageLocation Путь сохранения файла
+     */
     public void saveToStorage(String imgLink, String storageLocation) throws IOException {
         URL url = new URL(imgLink);
         InputStream inputStream = url.openStream();

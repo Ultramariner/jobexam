@@ -2,20 +2,17 @@ package isida.by.jobexam.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import isida.by.jobexam.dto.DogDto;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.DogRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
-import static isida.by.jobexam.config.utility.Utility.objectMapper;
+import static isida.by.jobexam.utility.Utility.objectMapper;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +27,11 @@ public class DogService {
     @Value("${server.storage}")
     private String storage;
 
+    /**
+     * Получает ссылку на случайное избражение определённой породы
+     * @param breed Уникальное имя породы
+     * @return Ссылка на изображение
+     */
     //todo tests
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
         String response = dogApiConnectionClient.getBreedImage(breed);
@@ -37,6 +39,11 @@ public class DogService {
         return root.get("message").textValue();
     }
 
+    /**
+     * Получает с UI информацию о собаке, сохраняет изображение в локальное файловое хранилище, сохраняет информацию о
+     * собаке в базу данных
+     * @param dogDto Данные о собаке
+     */
     public void saveToDatabase(DogDto dogDto) throws IOException {
         Dog dog = new Dog();
         dog.setName(dogDto.getName());
