@@ -8,13 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Map;
 
 @AllArgsConstructor
-@Controller
-@RequestMapping(path = "/vue/dogs/breeds")
+@RestController
+//todo (8) why /vue/? ->/api/
+@RequestMapping("/vue/dogs/breeds")
 public class BreedController {
 
     private final BreedService breedService;

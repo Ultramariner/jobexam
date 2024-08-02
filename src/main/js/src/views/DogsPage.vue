@@ -1,4 +1,5 @@
 <script setup>
+import './../styles/styles.css';
 import {ref, onBeforeMount, computed} from 'vue'
 import axios from 'axios';
 import Dropdown from 'primevue/dropdown';
@@ -6,22 +7,22 @@ import InputText from 'primevue/inputtext';
 import Image from 'primevue/image';
 import Button from 'primevue/button';
 
-
+//todo ref required?
 let imgUrl = ref("blank.jpg");
-let dogName = ref(null);
-let dogComment = ref(null);
-let breed = ref(null);
+let dogName = ref();
+let dogComment = ref();
+let breed = ref();
 let breeds = ref();
-let breedsList = ref([]);
 const imgLoaded = ref(false);
 const breedsMap = ref(new Map());
 
+//todo just function call
 onBeforeMount(async () => {
   try {
-    const response = await axios.get('http://localhost:8080/jobexam/vue/dogs');
-    const responseLocalization = await axios.get('http://localhost:8080/jobexam/vue/dogs/breeds/ru');
-    breeds.value = Array.from(response.data);
-    breeds.value.forEach((breed) => {
+    const response = await getAllBreeds();
+    const responseLocalization = await getBreedsLocalization("ru");
+    breeds = Array.from(response.data);
+    breeds.forEach((breed) => {
       if (responseLocalization.data[breed.name]) {
         breedsMap.value.set(breed.name, responseLocalization.data[breed.name]);
       } else {
@@ -33,42 +34,63 @@ onBeforeMount(async () => {
   }
 });
 
+//todo (5) relative pathes
+async function getAllBreeds() {
+  return await axios.get('http://localhost:8080/jobexam/vue/dogs');
+  // return await axios.get('/vue/dogs');
+}
 
-const getImg = async () => {
+async function getBreedsLocalization(lang) {
+  return await axios.get(`http://localhost:8080/jobexam/vue/dogs/breeds/${lang}`);
+  // return await axios.get(`/vue/dogs/breeds/${lang}`);
+}
+
+async function getImg() {
   if (!breed.value) {
     window.alert('Выберите породу');
     return;
   }
   try {
-    const response = await axios.get(`http://localhost:8080/jobexam/vue/dogs/${breed.value.key}`);
+    const response = await getRandomImageByBreed(breed.value.key);
     imgUrl.value = response.data;
   } catch (error) {
     console.error('Ошибка при получении изображения:', error);
   }
-};
+}
 
-const save = async () => {
+async function getRandomImageByBreed(breed) {
+  return await axios.get(`http://localhost:8080/jobexam/vue/dogs/${breed}`);
+  // return await axios.get(`/vue/dogs/${breed}`);
+}
+
+//todo alert if saved
+async function save() {
   if (!dogName.value) {
     window.alert('Заполните обязательные поля');
     return;
   }
   try {
-    await axios.post(`http://localhost:8080/jobexam/vue/dogs`, {
-      name: dogName.value,
-      breed: breed.value.key,
-      comment: dogComment.value,
-      link: imgUrl.value,
-    });
+    await sendDog(dogName.value, breed.value.key, dogComment.value, imgUrl.value)
   } catch (error) {
     console.error('Ошибка при загрузке данных:', error);
   }
-};
+}
 
-const handleImageLoad = () => {
+async function sendDog(name, breed, comment, link) {
+  // return axios.post(`/vue/dogs`, {
+  return axios.post(`http://localhost:8080/jobexam/vue/dogs`, {
+    name: name,
+    breed: breed,
+    comment: comment,
+    link: link,
+  });
+}
+
+async function handleImageLoad() {
   if (imgUrl.value !== "blank.jpg") {
     imgLoaded.value = true;
   }
-};
+}
 
 const breedsOptions = computed(() => {
   return Array.from(breedsMap.value).map(([key, value]) => ({ key: key, label: value }));
@@ -93,34 +115,13 @@ const breedsOptions = computed(() => {
 </template>
 
 <style scoped>
-.main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.content-box {
-  background-color: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.dropdown-with-margin {
-  margin-bottom: 10px;
-  margin-right: 10px;
-}
-
 img {
-  max-width: 400px;
-  height: auto;
+max-width: 400px;
+height: auto;
 }
 
-input, button {
-  margin-bottom: 10px;
-  margin-right: 10px;
+input, button, .dropdown-with-margin {
+margin-bottom: 10px;
+margin-right: 10px;
 }
 </style>

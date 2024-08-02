@@ -20,6 +20,7 @@ onMounted(async () => {
 const getBreeds = async () => {
   try {
     await axios.get('http://localhost:8080/jobexam/vue/dogs/breeds');
+    // await axios.get('/vue/dogs/breeds');
   } catch (error) {
     console.error('Ошибка при загрузке данных:', error);
   }

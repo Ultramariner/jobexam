@@ -18,4 +18,5 @@ server:
   storage: D:\storage
   servlet:
     context-path: /jobexam
+  dog-api-path: https://dog.ceo/api
 

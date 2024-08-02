@@ -6,10 +6,10 @@ import lombok.*;
 import java.util.List;
 import java.util.Map;
 
-
 @RequiredArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 @Table(name = "breeds")
 public class Breed {
