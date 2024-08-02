@@ -9,6 +9,7 @@ import isida.by.jobexam.mapper.Mapper;
 import isida.by.jobexam.mapper.MapperImpl;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.repository.BreedRepository;
+import isida.by.jobexam.utility.ObjectMapperProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static isida.by.jobexam.utility.Utility.objectMapper;
 
 @RequiredArgsConstructor
 @Service
@@ -46,9 +45,9 @@ public class BreedService {
         String response;
         response = dogApiConnectionClient.getAllBreeds();
         //todo (4) separate class for parsing
-        JsonNode jsonNode = objectMapper.readTree(response);
+        JsonNode jsonNode = ObjectMapperProvider.get().readTree(response);
         JsonNode messageNode = jsonNode.get("message");
-        Map<String, List<String>> breeds = objectMapper.convertValue(messageNode, new TypeReference<>() {
+        Map<String, List<String>> breeds = ObjectMapperProvider.get().convertValue(messageNode, new TypeReference<>() {
         });
         saveToDatabase(breeds);
     }
@@ -59,10 +58,9 @@ public class BreedService {
      * @return Локализованные названия пород в формате Map
      */
     public Map<String, String> getBreedsLocalization(String lang) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         TypeReference<Map<String, String>> typeReference = new TypeReference<>() {};
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("DogsRussianNames.json");
-        return objectMapper.readValue(inputStream, typeReference);
+        return ObjectMapperProvider.get().readValue(inputStream, typeReference);
     }
 
     /**
@@ -90,9 +88,9 @@ public class BreedService {
     public List<BreedDto> findAllBreeds() {
         List<Breed> breeds = breedRepository.findAll();
         List<BreedDto> breedsDto = new ArrayList<>();
-        Mapper mapper = new MapperImpl();
+        Mapper breedMapper = new MapperImpl();
         for (Breed breed : breeds) {
-            BreedDto dto = mapper.map(breed);
+            BreedDto dto = breedMapper.map(breed);
             breedsDto.add(dto);
         }
         return breedsDto;

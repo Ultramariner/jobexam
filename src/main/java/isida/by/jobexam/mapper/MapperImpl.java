@@ -4,6 +4,7 @@ import isida.by.jobexam.dto.BreedDto;
 import isida.by.jobexam.dto.DogDto;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.model.Dog;
+import isida.by.jobexam.service.BreedService;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class MapperImpl extends Mapper  {
 
-    //todo Autowire BreedService
     @Override
     public Breed map(BreedDto dto) {
         Breed breed = new Breed();

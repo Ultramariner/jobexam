@@ -7,14 +7,13 @@ import isida.by.jobexam.mapper.Mapper;
 import isida.by.jobexam.mapper.MapperImpl;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.DogRepository;
+import isida.by.jobexam.utility.ObjectMapperProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-
-import static isida.by.jobexam.utility.Utility.objectMapper;
 
 @RequiredArgsConstructor
 @Service
@@ -37,7 +36,7 @@ public class DogService {
     //todo tests
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
         String response = dogApiConnectionClient.getBreedImage(breed);
-        JsonNode root = objectMapper.readTree(response);
+        JsonNode root = ObjectMapperProvider.get().readTree(response);
         return root.get("message").textValue();
     }
 
@@ -46,10 +45,11 @@ public class DogService {
      * собаке в базу данных
      * @param dogDto Данные о собаке
      */
+    //todo refacor mapper
     public void saveToDatabase(DogDto dogDto) throws IOException {
         Mapper mapper = new MapperImpl();
         Dog dog = mapper.map(dogDto);
-        String imgLink = dogDto.getLink();
+        String imgLink = dog.getLink();
         String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
         dog.setPath(storageLocation);
         dog.setBreed(breedService.findByName(dogDto.getBreed()));
