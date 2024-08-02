@@ -2,6 +2,8 @@
 import {onMounted, ref} from "vue";
 import Button from "primevue/button"
 import {searchWelcomeMessage} from "@/services/WelcomeService";
+import router from "@/router";
+import axios from "axios";
 
 let welcomeMessage = ref("Hello");
 let isShowPage = ref(false);
@@ -15,11 +17,21 @@ onMounted(async () => {
     }
 })
 
+const getBreeds = async () => {
+  try {
+    await axios.get('http://localhost:8080/jobexam/vue/dogs/breeds');
+    // await axios.get('/vue/dogs/breeds');
+  } catch (error) {
+    console.error('Ошибка при загрузке данных:', error);
+  }
+};
+
 /**
  * Переход на страницу сохранения картинок
  */
-function goToSavingPage() {
-    //make routing here
+async function goToSavingPage() {
+  await getBreeds();
+  await router.push('/vue/dogs');
 }
 </script>
 
