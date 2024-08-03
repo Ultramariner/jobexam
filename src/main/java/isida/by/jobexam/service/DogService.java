@@ -3,8 +3,7 @@ package isida.by.jobexam.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import isida.by.jobexam.dto.DogDto;
-import isida.by.jobexam.mapper.Mapper;
-import isida.by.jobexam.mapper.MapperImpl;
+import isida.by.jobexam.mapper.DogMapper;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.DogRepository;
 import isida.by.jobexam.utility.ObjectMapperProvider;
@@ -24,6 +23,7 @@ public class DogService {
     private final BreedService breedService;
     private final DogApiConnectionClient dogApiConnectionClient;
     private final FileStorageService fileStorageService;
+    private final DogMapper dogMapper;
     //todo static final in utility
     @Value("${server.storage}")
     private String storage;
@@ -47,12 +47,9 @@ public class DogService {
      */
     //todo refacor mapper
     public void saveToDatabase(DogDto dogDto) throws IOException {
-        Mapper mapper = new MapperImpl();
-        Dog dog = mapper.map(dogDto);
-        String imgLink = dog.getLink();
+        String imgLink = dogDto.getLink();
         String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
-        dog.setPath(storageLocation);
-        dog.setBreed(breedService.findByName(dogDto.getBreed()));
+        Dog dog = dogMapper.mapToEntity(dogDto, storageLocation, breedService.findByName(dogDto.getBreed()));
         fileStorageService.saveToStorage(imgLink, storageLocation);
         dogRepository.save(dog);
     }

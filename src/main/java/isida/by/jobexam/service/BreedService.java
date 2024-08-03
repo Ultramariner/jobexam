@@ -3,10 +3,8 @@ package isida.by.jobexam.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import isida.by.jobexam.dto.BreedDto;
-import isida.by.jobexam.mapper.Mapper;
-import isida.by.jobexam.mapper.MapperImpl;
+import isida.by.jobexam.mapper.BreedMapper;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.repository.BreedRepository;
 import isida.by.jobexam.utility.ObjectMapperProvider;
@@ -27,6 +25,7 @@ public class BreedService {
 
     private final BreedRepository breedRepository;
     private final DogApiConnectionClient dogApiConnectionClient;
+    private final BreedMapper breedMapper;
 
     /**
      * Ищет запись о собаке в базе данных по имени
@@ -87,13 +86,7 @@ public class BreedService {
      */
     public List<BreedDto> findAllBreeds() {
         List<Breed> breeds = breedRepository.findAll();
-        List<BreedDto> breedsDto = new ArrayList<>();
-        Mapper breedMapper = new MapperImpl();
-        for (Breed breed : breeds) {
-            BreedDto dto = breedMapper.map(breed);
-            breedsDto.add(dto);
-        }
-        return breedsDto;
+        return breedMapper.mapToDto(breeds);
     }
 
 }
