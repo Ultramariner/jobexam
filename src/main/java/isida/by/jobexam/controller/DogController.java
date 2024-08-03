@@ -3,8 +3,8 @@ package isida.by.jobexam.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import isida.by.jobexam.dto.BreedDto;
 import isida.by.jobexam.dto.DogDto;
-import isida.by.jobexam.service.BreedService;
-import isida.by.jobexam.service.DogService;
+import isida.by.jobexam.service.impl.BreedServiceImpl;
+import isida.by.jobexam.service.impl.DogServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +18,8 @@ import java.util.List;
 @RequestMapping("/vue/dogs")
 public class DogController {
 
-    private final DogService dogService;
-    private final BreedService breedService;
+    private final DogServiceImpl dogService;
+    private final BreedServiceImpl breedService;
 
     //todo try-catch
     //todo comment methods

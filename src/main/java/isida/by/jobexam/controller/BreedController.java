@@ -1,7 +1,7 @@
 package isida.by.jobexam.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import isida.by.jobexam.service.BreedService;
+import isida.by.jobexam.service.impl.BreedServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/vue/dogs/breeds")
 public class BreedController {
 
-    private final BreedService breedService;
+    private final BreedServiceImpl breedService;
 
     /**
      * Получает от стороннего api список пород и обновляет в базе данных информацию о всех породах
