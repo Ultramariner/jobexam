@@ -8,6 +8,7 @@ import isida.by.jobexam.mapper.BreedMapper;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.repository.BreedRepository;
 import isida.by.jobexam.service.BreedService;
+import isida.by.jobexam.utility.BreedJsonParser;
 import isida.by.jobexam.utility.ObjectMapperProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ public class BreedServiceImpl implements BreedService {
     private final BreedRepository breedRepository;
     private final DogApiClientImpl dogApiConnectionClient;
     private final BreedMapper breedMapper;
+    private final BreedJsonParser jsonParser;
+    private static final String LOCALIZATION_JSON_FILE_NAME = "DogsRussianNames.json";
 
     /**
      * Ищет запись о собаке в базе данных по имени
@@ -45,12 +48,7 @@ public class BreedServiceImpl implements BreedService {
     @Override
     public void getAllBreeds() throws JsonProcessingException {
         String response = dogApiConnectionClient.getAllBreeds();
-        //todo (4) separate class for parsing
-        JsonNode jsonNode = ObjectMapperProvider.get().readTree(response);
-        JsonNode messageNode = jsonNode.get("message");
-        Map<String, List<String>> breeds = ObjectMapperProvider.get().convertValue(messageNode, new TypeReference<>() {
-        });
-        saveToDatabase(breeds);
+        saveToDatabase(jsonParser.parseToMap(response));
     }
 
     /**
@@ -61,7 +59,7 @@ public class BreedServiceImpl implements BreedService {
     @Override
     public Map<String, String> getBreedsLocalization(String lang) throws IOException {
         TypeReference<Map<String, String>> typeReference = new TypeReference<>() {};
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("DogsRussianNames.json");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(LOCALIZATION_JSON_FILE_NAME);
         return ObjectMapperProvider.get().readValue(inputStream, typeReference);
     }
 

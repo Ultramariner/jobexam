@@ -1,13 +1,12 @@
 package isida.by.jobexam.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import isida.by.jobexam.dto.DogDto;
 import isida.by.jobexam.mapper.DogMapper;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.DogRepository;
 import isida.by.jobexam.service.DogService;
-import isida.by.jobexam.utility.ObjectMapperProvider;
+import isida.by.jobexam.utility.DogJsonParser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +24,8 @@ public class DogServiceImpl implements DogService {
     private final DogApiClientImpl dogApiConnectionClient;
     private final FileStorageServiceImpl fileStorageService;
     private final DogMapper dogMapper;
-    //todo static final in utility
+    private final DogJsonParser jsonParser;
+    //todo static final in utility?
     @Value("${server.storage}")
     private String storage;
 
@@ -38,8 +38,7 @@ public class DogServiceImpl implements DogService {
     @Override
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
         String response = dogApiConnectionClient.getBreedImage(breed);
-        JsonNode root = ObjectMapperProvider.get().readTree(response);
-        return root.get("message").textValue();
+        return jsonParser.parseToString(response);
     }
 
     /**
@@ -47,7 +46,6 @@ public class DogServiceImpl implements DogService {
      * собаке в базу данных
      * @param dogDto Данные о собаке
      */
-    //todo refactor mapper
     @Override
     public void saveToDatabase(DogDto dogDto) throws IOException {
         String imgLink = dogDto.getLink();

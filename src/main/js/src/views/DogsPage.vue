@@ -7,7 +7,7 @@ import InputText from 'primevue/inputtext';
 import Image from 'primevue/image';
 import Button from 'primevue/button';
 
-//todo ref required?
+// todo ref required?
 let imgUrl = ref("blank.jpg");
 let dogName = ref();
 let dogComment = ref();
@@ -16,7 +16,7 @@ let breeds = ref();
 const imgLoaded = ref(false);
 const breedsMap = ref(new Map());
 
-//todo just function call
+// todo just function call
 onBeforeMount(async () => {
   try {
     const response = await getAllBreeds();
@@ -34,7 +34,7 @@ onBeforeMount(async () => {
   }
 });
 
-//todo (5) relative pathes
+// todo (5) relative pathes
 async function getAllBreeds() {
   return await axios.get('http://localhost:8080/jobexam/vue/dogs');
   // return await axios.get('/vue/dogs');

@@ -22,10 +22,7 @@ public class DogController {
     private final BreedServiceImpl breedService;
 
     //todo try-catch
-    //todo comment methods
     //todo @ApiResponces
-    //todo interfaces
-
     /**
      * Возвращает список всех пород, хранящихся в базе данных
      * @return Список всех пород, хранящихся в базе данных
