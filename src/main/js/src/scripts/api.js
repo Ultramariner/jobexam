@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// todo (5) relative pathes
 export async function getAllBreeds() {
     return await axios.get('http://localhost:8080/jobexam/api/dogs');
     // return await axios.get('/api/dogs');

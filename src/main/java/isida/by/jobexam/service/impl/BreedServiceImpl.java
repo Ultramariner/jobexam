@@ -28,7 +28,7 @@ public class BreedServiceImpl implements BreedService {
     private final DogApiClientImpl dogApiConnectionClient;
     private final BreedMapper breedMapper;
     private final BreedJsonParser jsonParser;
-    private static final String LOCALIZATION_JSON_FILE_NAME = "DogsRussianNames.json";
+    private static final String LOCALIZATION_JSON_FILE_NAME = "DogsNames_";
 
     /**
      * Ищет запись о собаке в базе данных по имени
@@ -58,7 +58,7 @@ public class BreedServiceImpl implements BreedService {
     @Override
     public Map<String, String> getBreedsLocalization(String lang) throws IOException {
         TypeReference<Map<String, String>> typeReference = new TypeReference<>() {};
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(LOCALIZATION_JSON_FILE_NAME);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(LOCALIZATION_JSON_FILE_NAME + lang + ".json");
         return ObjectMapperProvider.get().readValue(inputStream, typeReference);
     }
 
