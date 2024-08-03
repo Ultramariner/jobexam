@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-// todo (8) /vue/ ->/api/?
 @AllArgsConstructor
 @RestController
-@RequestMapping("/vue/dogs")
+@RequestMapping("/api/dogs")
 public class DogController {
 
     private final DogServiceImpl dogService;
     private final BreedServiceImpl breedService;
 
     //todo try-catch
-    //todo @ApiResponces
+    //todo @ApiResponses
     /**
      * Возвращает список всех пород, хранящихся в базе данных
      * @return Список всех пород, хранящихся в базе данных

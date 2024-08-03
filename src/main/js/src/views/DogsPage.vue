@@ -1,7 +1,7 @@
 <script setup>
 import './../styles/styles.css';
 import {ref, onBeforeMount, computed} from 'vue'
-import axios from 'axios';
+import { getAllBreeds, getBreedsLocalization, getRandomImageByBreed, sendDog } from '@/scripts/api';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import Image from 'primevue/image';
@@ -35,15 +35,15 @@ onBeforeMount(async () => {
 });
 
 // todo (5) relative pathes
-async function getAllBreeds() {
-  return await axios.get('http://localhost:8080/jobexam/vue/dogs');
-  // return await axios.get('/vue/dogs');
-}
+// async function getAllBreeds() {
+//   return await axios.get('http://localhost:8080/jobexam/api/dogs');
+//   // return await axios.get('/api/dogs');
+// }
 
-async function getBreedsLocalization(lang) {
-  return await axios.get(`http://localhost:8080/jobexam/vue/dogs/breeds/${lang}`);
-  // return await axios.get(`/vue/dogs/breeds/${lang}`);
-}
+// async function getBreedsLocalization(lang) {
+//   return await axios.get(`http://localhost:8080/jobexam/api/dogs/breeds/${lang}`);
+//   // return await axios.get(`/api/dogs/breeds/${lang}`);
+// }
 
 async function getImg() {
   if (!breed.value) {
@@ -58,10 +58,10 @@ async function getImg() {
   }
 }
 
-async function getRandomImageByBreed(breed) {
-  return await axios.get(`http://localhost:8080/jobexam/vue/dogs/${breed}`);
-  // return await axios.get(`/vue/dogs/${breed}`);
-}
+// async function getRandomImageByBreed(breed) {
+//   return await axios.get(`http://localhost:8080/jobexam/api/dogs/${breed}`);
+//   // return await axios.get(`/api/dogs/${breed}`);
+// }
 
 //todo alert if saved
 async function save() {
@@ -76,15 +76,15 @@ async function save() {
   }
 }
 
-async function sendDog(name, breed, comment, link) {
-  // return axios.post(`/vue/dogs`, {
-  return axios.post(`http://localhost:8080/jobexam/vue/dogs`, {
-    name: name,
-    breed: breed,
-    comment: comment,
-    link: link,
-  });
-}
+// async function sendDog(name, breed, comment, link) {
+//   // return axios.post(`/api/dogs`, {
+//   return axios.post(`http://localhost:8080/jobexam/api/dogs`, {
+//     name: name,
+//     breed: breed,
+//     comment: comment,
+//     link: link,
+//   });
+// }
 
 async function handleImageLoad() {
   if (imgUrl.value !== "blank.jpg") {
@@ -100,7 +100,7 @@ const breedsOptions = computed(() => {
 <template>
   <div class="main-container">
     <div class="content-box">
-      <form v-on:submit.prevent="formSubmit">
+      <form v-on:submit.prevent>
         <Dropdown v-model="breed" :options="breedsOptions" optionLabel="label" @change="getImg" placeholder="Выберите породу" class="dropdown-with-margin" />
         <InputText v-if="imgLoaded" v-model="dogName" placeholder="Имя" />
         <InputText v-if="imgLoaded" v-model="dogComment" placeholder="Комментарий" />

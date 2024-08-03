@@ -2,7 +2,6 @@ package isida.by.jobexam.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import isida.by.jobexam.dto.BreedDto;
 import isida.by.jobexam.mapper.BreedMapper;
 import isida.by.jobexam.model.Breed;
