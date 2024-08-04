@@ -5,7 +5,10 @@ import isida.by.jobexam.dto.DogDto;
 import isida.by.jobexam.mapper.DogMapper;
 import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.DogRepository;
+import isida.by.jobexam.service.BreedService;
+import isida.by.jobexam.service.DogApiClient;
 import isida.by.jobexam.service.DogService;
+import isida.by.jobexam.service.FileStorageService;
 import isida.by.jobexam.utility.DogJsonParser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +23,9 @@ import java.io.IOException;
 public class DogServiceImpl implements DogService {
 
     private final DogRepository dogRepository;
-    private final BreedServiceImpl breedService;
-    private final DogApiClientImpl dogApiConnectionClient;
-    private final FileStorageServiceImpl fileStorageService;
+    private final BreedService breedService;
+    private final DogApiClient dogApiConnectionClient;
+    private final FileStorageService fileStorageService;
     private final DogMapper dogMapper;
     private final DogJsonParser jsonParser;
     //todo static final in utility?

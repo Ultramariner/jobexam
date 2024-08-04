@@ -24,7 +24,6 @@ public class Dog {
     private String link;
     private String path;
 
-    //todo save-update
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

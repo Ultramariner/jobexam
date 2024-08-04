@@ -7,6 +7,7 @@ import isida.by.jobexam.mapper.BreedMapper;
 import isida.by.jobexam.model.Breed;
 import isida.by.jobexam.repository.BreedRepository;
 import isida.by.jobexam.service.BreedService;
+import isida.by.jobexam.service.DogApiClient;
 import isida.by.jobexam.utility.BreedJsonParser;
 import isida.by.jobexam.utility.ObjectMapperProvider;
 import jakarta.transaction.Transactional;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class BreedServiceImpl implements BreedService {
 
     private final BreedRepository breedRepository;
-    private final DogApiClientImpl dogApiConnectionClient;
+    private final DogApiClient dogApiClient;
     private final BreedMapper breedMapper;
     private final BreedJsonParser jsonParser;
     private static final String LOCALIZATION_JSON_FILE_NAME = "DogsNames_";
@@ -46,7 +47,7 @@ public class BreedServiceImpl implements BreedService {
      */
     @Override
     public void getAllBreeds() throws JsonProcessingException {
-        String response = dogApiConnectionClient.getAllBreeds();
+        String response = dogApiClient.getAllBreeds();
         saveToDatabase(jsonParser.parseToMap(response));
     }
 
