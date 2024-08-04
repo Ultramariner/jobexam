@@ -20,7 +20,7 @@ let isImgLoading = ref(false);
 const isSaved = ref(false);
 const breedsMap = ref(new Map());
 
-// todo just function call
+// todo just function call?
 // todo localization on click
 onBeforeMount(async () => {
   try {

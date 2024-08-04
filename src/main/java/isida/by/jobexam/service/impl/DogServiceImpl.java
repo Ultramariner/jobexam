@@ -48,11 +48,19 @@ public class DogServiceImpl implements DogService {
      */
     @Override
     public void saveToDatabase(DogDto dogDto) throws IOException {
+
         String imgLink = dogDto.getLink();
         String storageLocation = storage + "\\" + imgLink.substring(imgLink.lastIndexOf("/") + 1);
-        Dog dog = dogMapper.mapToEntity(dogDto, storageLocation, breedService.findByName(dogDto.getBreed()));
         fileStorageService.saveToStorage(imgLink, storageLocation);
-        dogRepository.save(dog);
+        Dog dog = dogMapper.mapToEntity(dogDto, storageLocation, breedService.findByName(dogDto.getBreed()));
+        Dog existingDog = dogRepository.findByNameAndBreedAndLink(dog.getName(), dog.getBreed(), dog.getLink());
+        if (existingDog != null) {
+            existingDog.setComment(dog.getComment());
+            existingDog.setPath(storageLocation);
+        } else {
+            existingDog = dog;
+        }
+        dogRepository.save(existingDog);
     }
 
 }
