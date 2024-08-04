@@ -7,18 +7,38 @@ import isida.by.jobexam.model.Dog;
 import isida.by.jobexam.repository.DogRepository;
 import isida.by.jobexam.service.BreedService;
 import isida.by.jobexam.service.DogApiClient;
-import isida.by.jobexam.service.DogService;
 import isida.by.jobexam.service.FileStorageService;
 import isida.by.jobexam.utility.DogJsonParser;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class DogServiceImplTest {
+
+    @Mock
+    private DogRepository dogRepository;
+    @Mock
+    private BreedService breedService;
+    @Mock
+    private DogApiClient dogApiClient;
+    @Mock
+    private FileStorageService fileStorageService;
+    @Mock
+    private DogMapper dogMapper;
+    @Mock
+    private DogJsonParser jsonParser;
+    @InjectMocks
+    private DogServiceImpl dogService;
 
     @Test
     void saveToDatabaseIfExists() throws IOException {
@@ -36,14 +56,7 @@ class DogServiceImplTest {
         dog.setBreed(breed);
         dog.setLink("http://example.com/dog.jpg");
 
-        DogRepository dogRepository = Mockito.mock(DogRepository.class);
-        BreedService breedService = Mockito.mock(BreedService.class);
-        DogApiClient dogApiClient = Mockito.mock(DogApiClient.class);
-        FileStorageService fileStorageService = Mockito.mock(FileStorageService.class);
-        DogMapper dogMapper = Mockito.mock(isida.by.jobexam.mapper.DogMapper.class);
-        DogJsonParser jsonParser = Mockito.mock(DogJsonParser.class);
-
-        DogService dogService = new DogServiceImpl(dogRepository,breedService,dogApiClient,fileStorageService,dogMapper,jsonParser);
+        ArgumentCaptor<Dog> captor = ArgumentCaptor.forClass(Dog.class);
 
         when(dogMapper.mapToEntity(any(DogDto.class), anyString(), any()))
                 .thenReturn(dog);
@@ -53,5 +66,7 @@ class DogServiceImplTest {
 
         dogService.saveToDatabase(dogDto);
 
+        verify(dogRepository).save(dog);
+        verify(dogRepository).save(captor.capture());
     }
 }

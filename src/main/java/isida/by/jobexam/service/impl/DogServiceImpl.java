@@ -34,7 +34,7 @@ public class DogServiceImpl implements DogService {
     @Value("${server.storage}")
     private String storage;
 
-    //todo service tests
+    //todo service tests for services & @DataJpaTest for jpa
     //todo extended logging
     /**
      * Получает ссылку на случайное избражение определённой породы
