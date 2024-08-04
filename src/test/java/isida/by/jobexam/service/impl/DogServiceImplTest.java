@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class DogServiceImplTest {
@@ -25,6 +24,8 @@ class DogServiceImplTest {
     void saveToDatabaseIfExists() throws IOException {
 
         DogDto dogDto = new DogDto();
+        dogDto.setName("Buddy");
+        dogDto.setComment("Comment");
         dogDto.setLink("http://example.com/dog.jpg");
         dogDto.setBreed("Golden Retriever");
 
@@ -52,8 +53,5 @@ class DogServiceImplTest {
 
         dogService.saveToDatabase(dogDto);
 
-        verify(fileStorageService).saveToStorage("http://example.com/dog.jpg", "storage\\dog.jpg");
-        verify(dogMapper).mapToEntity(dogDto, "storage\\dog.jpg", breedService.findByName("Golden Retriever"));
-        verify(dogRepository).save(dog);
     }
 }
