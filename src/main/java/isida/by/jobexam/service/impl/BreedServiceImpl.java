@@ -12,6 +12,7 @@ import isida.by.jobexam.utility.BreedJsonParser;
 import isida.by.jobexam.utility.ObjectMapperProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 @Transactional
+@Slf4j
+
 public class BreedServiceImpl implements BreedService {
 
     private final BreedRepository breedRepository;
@@ -49,6 +52,7 @@ public class BreedServiceImpl implements BreedService {
     public void getAllBreeds() throws JsonProcessingException {
         String response = dogApiClient.getAllBreeds();
         saveToDatabase(jsonParser.parseToMap(response));
+        log.info("Список пород собак обновлён");
     }
 
     /**

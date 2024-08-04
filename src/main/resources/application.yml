@@ -14,4 +14,8 @@ server:
   servlet:
     context-path: /jobexam
   dog-api-path: https://dog.ceo/api
+logging:
+  level:
+    root: INFO
+    isida.by.jobexam: INFO
 
