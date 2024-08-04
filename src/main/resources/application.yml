@@ -8,10 +8,15 @@ spring:
     show-sql: true
     open-in-view: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
 server:
   storage: D:\storage
   servlet:
     context-path: /jobexam
   dog-api-path: https://dog.ceo/api
-
+logging:
+  level:
+    root: INFO
+    isida:
+      by:
+        jobexam: INFO

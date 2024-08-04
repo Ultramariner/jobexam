@@ -12,6 +12,7 @@ import isida.by.jobexam.service.FileStorageService;
 import isida.by.jobexam.utility.DogJsonParser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Service
 @Transactional
+@Slf4j
 public class DogServiceImpl implements DogService {
 
     private final DogRepository dogRepository;
     private final BreedService breedService;
-    private final DogApiClient dogApiConnectionClient;
+    private final DogApiClient dogApiClient;
     private final FileStorageService fileStorageService;
     private final DogMapper dogMapper;
     private final DogJsonParser jsonParser;
@@ -32,15 +34,16 @@ public class DogServiceImpl implements DogService {
     @Value("${server.storage}")
     private String storage;
 
+    //todo service tests
+    //todo extended logging
     /**
      * Получает ссылку на случайное избражение определённой породы
      * @param breed Уникальное имя породы
      * @return Ссылка на изображение
      */
-    //todo tests
     @Override
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
-        String response = dogApiConnectionClient.getBreedImage(breed);
+        String response = dogApiClient.getBreedImage(breed);
         return jsonParser.parseToString(response);
     }
 
@@ -64,6 +67,7 @@ public class DogServiceImpl implements DogService {
             existingDog = dog;
         }
         dogRepository.save(existingDog);
+        log.info("Информация о картинке сохранена");
     }
 
 }
