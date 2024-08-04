@@ -19,8 +19,8 @@ onMounted(async () => {
 
 const getBreeds = async () => {
   try {
-    await axios.get('http://localhost:8080/jobexam/vue/dogs/breeds');
-    // await axios.get('/vue/dogs/breeds');
+    await axios.get('http://localhost:8080/jobexam/api/dogs/breeds');
+    // await axios.get('/api/dogs/breeds');
   } catch (error) {
     console.error('Ошибка при загрузке данных:', error);
   }
@@ -31,7 +31,7 @@ const getBreeds = async () => {
  */
 async function goToSavingPage() {
   await getBreeds();
-  await router.push('/vue/dogs');
+  await router.push('/api/dogs');
 }
 </script>
 

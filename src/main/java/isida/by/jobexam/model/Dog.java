@@ -10,7 +10,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
-@Table(name = "dogs")
+@Table(name = "dog_image_notes")
 public class Dog {
 
     @Id
