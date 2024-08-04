@@ -26,7 +26,7 @@ public class DogServiceImpl implements DogService {
 
     private final DogRepository dogRepository;
     private final BreedService breedService;
-    private final DogApiClient dogApiConnectionClient;
+    private final DogApiClient dogApiClient;
     private final FileStorageService fileStorageService;
     private final DogMapper dogMapper;
     private final DogJsonParser jsonParser;
@@ -34,7 +34,7 @@ public class DogServiceImpl implements DogService {
     @Value("${server.storage}")
     private String storage;
 
-    //todo tests
+    //todo service tests
     //todo extended logging
     /**
      * Получает ссылку на случайное избражение определённой породы
@@ -43,7 +43,7 @@ public class DogServiceImpl implements DogService {
      */
     @Override
     public String getDogImageByBreed(String breed) throws JsonProcessingException {
-        String response = dogApiConnectionClient.getBreedImage(breed);
+        String response = dogApiClient.getBreedImage(breed);
         return jsonParser.parseToString(response);
     }
 

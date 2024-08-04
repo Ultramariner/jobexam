@@ -20,7 +20,7 @@ public class DogController {
     private final DogService dogService;
     private final BreedService breedService;
 
-    //todo try-catch
+    //todo try-catch & exceptions
     //todo @ApiResponses
     /**
      * Возвращает список всех пород, хранящихся в базе данных
