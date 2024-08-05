@@ -12,7 +12,7 @@ const router = createRouter({
             props: (route) => route.query,
         },
         {
-            path: '/api/dogs',
+            path: '/vue/dogs',
             name: "DogsPage",
             component: DogsPage,
             props: (route) => route.query

@@ -25,10 +25,10 @@ const breedsMap = ref(new Map());
 onBeforeMount(async () => {
   try {
     const response = await getAllBreeds();
-    breeds = Array.from(response.data);
+    breeds.value = Array.from(response.data);
     if (navigator.language !== 'en-US') {
       const responseLocalization = await getBreedsLocalization(navigator.language.toString());
-      breeds.forEach((breed) => {
+      breeds.value.forEach((breed) => {
         if (responseLocalization.data[breed.name]) {
           breedsMap.value.set(breed.name, responseLocalization.data[breed.name]);
         } else {
