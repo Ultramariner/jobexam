@@ -14,8 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-// todo /vue -> /api?
-@RequestMapping("/vue/dogs")
+@RequestMapping("/api/dogs")
 public class DogController {
 
     private final DogService dogService;

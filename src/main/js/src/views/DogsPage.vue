@@ -20,6 +20,9 @@ let isImgLoading = ref(false);
 const isSaved = ref(false);
 const breedsMap = ref(new Map());
 
+/**
+ * Получает список пород из базы данных, локализованные имена пород из файла на сервере и комбинирует их
+ */
 // todo just function call?
 // todo localization on click
 onBeforeMount(async () => {
@@ -41,6 +44,9 @@ onBeforeMount(async () => {
   }
 });
 
+/**
+ * Отправляет запрос на сторонный api и получает ссылку на случайную картинку конкретной породы
+ */
 async function getImg() {
   if (!breed.value) {
     window.alert('Выберите породу');
@@ -56,6 +62,9 @@ async function getImg() {
   }
 }
 
+/**
+ * Отправляет на сервер данные для сохранения
+ */
 async function save() {
   if (!dogName.value) {
     window.alert('Заполните обязательные поля');

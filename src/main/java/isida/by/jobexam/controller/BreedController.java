@@ -14,7 +14,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/vue/dogs/breeds")
+@RequestMapping("/api/dogs/breeds")
 public class BreedController {
 
     private final BreedService breedService;
